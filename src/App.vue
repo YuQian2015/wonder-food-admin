@@ -15,6 +15,11 @@ export default {
   components: {
     Nav,
   },
+  mounted() {
+    window.addEventListener("token_invalid", () => {
+      this.$router.replace("/login");
+    });
+  },
 };
 </script>
 
