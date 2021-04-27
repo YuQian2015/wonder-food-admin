@@ -8,6 +8,7 @@
     active-text-color="#ffd04b"
     @select="handleSelect"
   >
+    <el-menu-item index="index">社区帖子</el-menu-item>
     <el-menu-item index="users">用户列表</el-menu-item>
     <el-menu-item index="bus">商家列表</el-menu-item>
   </el-menu>
@@ -18,7 +19,7 @@ export default {
   name: "Nav",
   data() {
     return {
-      page: "users",
+      page: "index",
     };
   },
   methods: {
@@ -33,6 +34,9 @@ export default {
     switch (name) {
       case "user-list":
         this.page = "users";
+        return;
+      case "index":
+        this.page = "index";
         return;
     }
   },
