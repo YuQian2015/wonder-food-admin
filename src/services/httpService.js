@@ -3,6 +3,25 @@ import { Message } from 'element-ui';
 import localForage from "localforage";
 // https://www.kancloud.cn/yunye/axios/234845
 
+function validateStatus(status) {
+    if (status === 401) {
+        HttpService.invalid();
+    }
+    return status >= 200 && status < 300; // default
+}
+
+function transformResponse(data) {
+    try {
+        const result = JSON.parse(data);
+        if (!result.success && result.code >= 400 && result.code <= 500) {
+            Message.error(result.message);
+        }
+        return result;
+    } catch (e) {
+        console.log(e);
+    }
+}
+
 export default class HttpService {
     static addQuery(url, str) {
         return url += /\?/g.test(url) ? `&${str}` : `?${str}`;
@@ -25,27 +44,8 @@ export default class HttpService {
                 'Authorization': this.token
             },
             data,
-            validateStatus: function (status) {
-                if (status === 401) {
-                    HttpService.invalid();
-                }
-                return status >= 200 && status < 300; // default
-            },
-            transformResponse: [function (data) {
-                try {
-                    const result = JSON.parse(data);
-                    if (!result.success && result.code === 500) {
-                        Message.error(result.msg);
-                    }
-                    if (!result.success && result.code === 422) {
-                        Message.error(result.msg);
-                    }
-                    return result;
-                }
-                catch (e) {
-                    console.log(e);
-                }
-            }],
+            validateStatus,
+            transformResponse: [transformResponse],
         });
 
         if (result && result.status) {
@@ -74,24 +74,8 @@ export default class HttpService {
                 'Authorization': this.token
             },
             data,
-            validateStatus: function (status) {
-                if (status === 401) {
-                    HttpService.invalid();
-                }
-                return status >= 200 && status < 300; // default
-            },
-            transformResponse: [function (data) {
-                try {
-                    const result = JSON.parse(data);
-                    if (!result.success && result.code === 500) {
-                        Message.error(result.msg);
-                    }
-                    return result;
-                }
-                catch (e) {
-                    console.log(e);
-                }
-            }],
+            validateStatus,
+            transformResponse: [transformResponse],
         });
 
         if (result && result.status) {
@@ -120,24 +104,8 @@ export default class HttpService {
                 'Authorization': this.token
             },
             data,
-            validateStatus: function (status) {
-                if (status === 401) {
-                    HttpService.invalid();
-                }
-                return status >= 200 && status < 300; // default
-            },
-            transformResponse: [function (data) {
-                try {
-                    const result = JSON.parse(data);
-                    if (!result.success && result.code === 500) {
-                        Message.error(result.msg);
-                    }
-                    return result;
-                }
-                catch (e) {
-                    console.log(e);
-                }
-            }],
+            validateStatus,
+            transformResponse: [transformResponse],
         });
 
         if (result && result.status) {
@@ -160,30 +128,13 @@ export default class HttpService {
                 'Authorization': this.token
             },
             data,
-            validateStatus: function (status) {
-
-                if (status === 401) {
-                    HttpService.invalid();
-                }
-                return status >= 200 && status < 300; // default
-            },
+            validateStatus,
             transformRequest: [function (data, headers) {
                 // Do whatever you want to transform the data
                 headers['Content-Type'] = 'multipart/form-data'
                 return data;
             }],
-            transformResponse: [function (data) {
-                try {
-                    const result = JSON.parse(data);
-                    if (!result.success && result.code === 500) {
-                        Message.error(result.msg);
-                    }
-                    return result;
-                }
-                catch (e) {
-                    console.log(e);
-                }
-            }],
+            transformResponse: [transformResponse],
         });
 
         if (result && result.status) {
@@ -206,24 +157,8 @@ export default class HttpService {
                 'Authorization': this.token
             },
             data,
-            validateStatus: function (status) {
-                if (status === 401) {
-                    HttpService.invalid();
-                }
-                return status >= 200 && status < 300; // default
-            },
-            transformResponse: [function (data) {
-                try {
-                    const result = JSON.parse(data);
-                    if (!result.success && result.code === 500) {
-                        Message.error(result.msg);
-                    }
-                    return result;
-                }
-                catch (e) {
-                    console.log(e);
-                }
-            }],
+            validateStatus,
+            transformResponse: [transformResponse],
         });
 
         if (result && result.status) {

@@ -83,7 +83,7 @@ export default {
       if (res && res.success && res.data) {
         console.log(res.data.token);
         await localforage.setItem("token", res.data.token);
-        this.$router.replace("/users");
+        this.$router.replace("/index");
       }
     },
     showCreate() {

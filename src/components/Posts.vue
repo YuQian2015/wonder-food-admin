@@ -25,7 +25,6 @@ export default {
   async mounted() {
     const res = await apiService.getPosts();
     if (res && res.success) {
-      console.log(res.data);
       this.posts = res.data;
     }
   },

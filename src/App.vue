@@ -1,8 +1,23 @@
 <template>
   <div id="app">
-    <Nav />
     <el-container>
-      <router-view />
+      <el-header
+        style="
+          background-color: rgb(238, 241, 246);
+          text-align: right;
+          font-size: 12px;
+        "
+      >
+        <span style="line-height: 60px;">用户信息</span>
+      </el-header>
+      <el-container style="height: calc(100vh - 60px)">
+        <el-aside width="200px" style="background-color: rgb(238, 241, 246)"
+          ><Nav
+        /></el-aside>
+        <el-main>
+          <router-view />
+        </el-main>
+      </el-container>
     </el-container>
   </div>
 </template>
@@ -22,16 +37,7 @@ export default {
   },
 };
 </script>
-
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
 body {
   margin: 0;
 }

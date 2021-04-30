@@ -1,16 +1,27 @@
 <template>
   <el-menu
     :default-active="page"
-    class="el-menu-demo"
-    mode="horizontal"
     background-color="#545c64"
     text-color="#fff"
     active-text-color="#ffd04b"
-    @select="handleSelect"
+    router
   >
-    <el-menu-item index="index">社区帖子</el-menu-item>
-    <el-menu-item index="users">用户列表</el-menu-item>
-    <el-menu-item index="bus">商家列表</el-menu-item>
+    <el-menu-item index="index">
+      <i class="el-icon-star-off"></i>
+      <span slot="title">社区管理</span>
+    </el-menu-item>
+    <el-menu-item index="users">
+      <i class="el-icon-user"></i>
+      <span slot="title">用户管理</span>
+    </el-menu-item>
+    <el-menu-item index="store">
+      <i class="el-icon-position"></i>
+      <span slot="title">商家列表</span>
+    </el-menu-item>
+    <el-menu-item index="dish">
+      <i class="el-icon-dish"></i>
+      <span slot="title">菜肴管理</span>
+    </el-menu-item>
   </el-menu>
 </template>
 
@@ -23,10 +34,6 @@ export default {
     };
   },
   methods: {
-    handleSelect(key, keyPath) {
-      console.log(key, keyPath);
-      this.$router.replace(`/${key}`);
-    },
   },
 
   mounted() {

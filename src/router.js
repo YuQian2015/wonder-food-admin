@@ -4,6 +4,7 @@ import VueRouter from 'vue-router'
 import UserList from './components/UserList.vue'
 import LoginPage from './components/LoginPage.vue'
 import Posts from './components/Posts.vue'
+import Store from './components/Store.vue'
 
 Vue.use(VueRouter)
 
@@ -23,8 +24,12 @@ const routes = [
         path: '/index',
         name: 'index',
         component: Posts
+    },
+    {
+        path: '/store',
+        name: 'store',
+        component: Store
     }
-
 
 ]
 
