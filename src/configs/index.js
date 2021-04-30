@@ -3,7 +3,7 @@ const dev = {
 }
 
 const prod = {
-    baseUrl: 'http://moyufed.com:3000'
+    baseUrl: 'http://127.0.0.1:3000'
 }
 
 export const apiConfig = process.env.NODE_ENV === 'production' ? prod : dev;

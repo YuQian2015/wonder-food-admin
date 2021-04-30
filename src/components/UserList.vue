@@ -1,7 +1,6 @@
 <template>
-  <el-container>
-    <!-- <el-aside width="200px">Aside</el-aside> -->
-    <el-main>
+  <el-tabs v-model="activeName" @tab-click="handleClick">
+    <el-tab-pane label="用户管理" name="users">
       <div v-if="users && users.length > 0">
         <el-table :data="users" style="width: 100%">
           <el-table-column prop="id" label="ID"></el-table-column>
@@ -14,8 +13,9 @@
           </el-table-column>
         </el-table>
       </div>
-    </el-main>
-  </el-container>
+    </el-tab-pane>
+    <el-tab-pane label="角色管理" name="role">角色管理</el-tab-pane>
+  </el-tabs>
 </template>
 <script>
 import { apiService } from "../services";
@@ -23,11 +23,15 @@ import { format } from "../utils";
 export default {
   data() {
     return {
+      activeName: "users",
       users: [],
     };
   },
   methods: {
     format,
+    handleClick() {
+      console.log(123123);
+    },
     async getUserList() {
       const res = await apiService.getUserList();
       if (res && res.success) {

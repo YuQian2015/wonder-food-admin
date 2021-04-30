@@ -1,14 +1,12 @@
 <template>
   <div id="app">
     <el-container>
-      <el-header
-        style="
-          background-color: rgb(238, 241, 246);
-          text-align: right;
-          font-size: 12px;
-        "
-      >
-        <span style="line-height: 60px;">用户信息</span>
+      <el-header class="top-nav">
+        <div class="logo">
+          <img alt="Vue logo" style="float: left" src="./assets/logo.png" />
+        </div>
+        <div class="sys-title">搵食后台管理系统</div>
+        <div class="user-info">用户信息</div>
       </el-header>
       <el-container style="height: calc(100vh - 60px)">
         <el-aside width="200px" style="background-color: rgb(238, 241, 246)"
@@ -40,5 +38,25 @@ export default {
 <style>
 body {
   margin: 0;
+}
+.top-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: solid 1px #CCCCCC;
+}
+.logo {
+  padding: 10px;
+}
+.sys-title {
+  flex: 1;
+  line-height: 60px;
+}
+.logo img {
+  width: 40px;
+  height: 40px;
+}
+.logo .user-info {
+  line-height: 60px;
 }
 </style>

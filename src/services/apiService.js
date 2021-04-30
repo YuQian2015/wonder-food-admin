@@ -35,6 +35,18 @@ const ApiService = {
         return HttpService.get(`${apiConfig.baseUrl}/api/stores`);
     },
 
+    async createProduct(data) {
+        return HttpService.post(`${apiConfig.baseUrl}/api/products`, data);
+    },
+
+    async deleteProduct(id) {
+        return HttpService.delete(`${apiConfig.baseUrl}/api/products/${id}`);
+    },
+
+    async getProduct() {
+        return HttpService.get(`${apiConfig.baseUrl}/api/products`);
+    },
+    
     async uploadImage(data) {
         return HttpService.upload(`${apiConfig.baseUrl}/api/upload/image`, data);
     }

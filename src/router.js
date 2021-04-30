@@ -1,10 +1,11 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
+import Vue from 'vue';
+import VueRouter from 'vue-router';
 
-import UserList from './components/UserList.vue'
-import LoginPage from './components/LoginPage.vue'
-import Posts from './components/Posts.vue'
-import Store from './components/Store.vue'
+import UserList from './components/UserList.vue';
+import LoginPage from './components/LoginPage.vue';
+import Posts from './components/Posts.vue';
+import Store from './components/Store.vue';
+import Products from './components/Products.vue';
 
 Vue.use(VueRouter)
 
@@ -29,9 +30,13 @@ const routes = [
         path: '/store',
         name: 'store',
         component: Store
+    },
+    {
+        path: '/dish',
+        name: 'dish',
+        component: Products
     }
-
-]
+];
 
 export default new VueRouter({
     mode: 'hash',
