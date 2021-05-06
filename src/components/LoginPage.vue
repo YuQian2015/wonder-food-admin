@@ -1,10 +1,30 @@
 <template>
   <div>
+    <el-drawer
+      :visible.sync="drawer"
+      :direction="direction"
+      :before-close="handleClose"
+      :show-close="false"
+      size="100%"
+    >
+      <div style="text-align: center">
+        <el-button type="success" round @click="initSystem">立即创建</el-button>
+        <br />
+        <br />
+        <el-alert
+          center
+          :closable="false"
+          title="系统未设置初始账号，点击创建管理员和用户权限!"
+          type="error"
+        >
+        </el-alert>
+      </div>
+    </el-drawer>
     <el-dialog
       title="登录/注册"
       :close-on-click-modal="false"
       :show-close="false"
-      :visible.sync="dialogTableVisible"
+      :visible="dialogTableVisible && !drawer"
     >
       <el-form ref="form" :model="data" label-width="80px">
         <el-form-item label="Email">
@@ -14,27 +34,27 @@
           <el-input placeholder="输入用户名" v-model="data.name"></el-input>
         </el-form-item>
         <el-form-item label="密码">
-          <el-input placeholder="输入密码" v-model="data.password"></el-input>
+          <el-input
+            placeholder="输入密码"
+            type="password"
+            v-model="data.password"
+          ></el-input>
         </el-form-item>
         <el-form-item v-if="showCreateForm" label="重复密码">
           <el-input
             placeholder="输入密码"
+            type="password"
             v-model="data.repeatPassword"
           ></el-input>
         </el-form-item>
-        <el-button v-if="!showCreateForm" type="primary" @click="onSubmit"
-          >登录</el-button
-        >
-        <el-button v-if="showCreateForm" type="primary" @click="onSubmit"
-          >立即注册</el-button
-        >
-        <br />
-        <el-button v-if="!showCreateForm" type="text" @click="showCreate"
-          >创建用户</el-button
-        >
-        <el-button v-if="showCreateForm" type="text" @click="returnLogin"
-          >返回登录</el-button
-        >
+        <div style="text-align: center">
+          <el-button v-if="!showCreateForm" type="primary" @click="onSubmit"
+            >登录</el-button
+          >
+          <el-button v-if="showCreateForm" type="primary" @click="createAdmin"
+            >创建超级管理员</el-button
+          >
+        </div>
       </el-form>
     </el-dialog>
   </div>
@@ -45,8 +65,10 @@ import { apiService } from "../services";
 export default {
   data() {
     return {
-      dialogTableVisible: true,
+      dialogTableVisible: false,
       showCreateForm: false,
+      drawer: false,
+      direction: "ttb",
       data: {
         name: "",
         email: "",
@@ -56,7 +78,20 @@ export default {
     };
   },
   methods: {
-    async onSubmit() {
+    handleClose() {},
+    initSystem() {
+      this.drawer = false;
+      this.showCreateForm = true;
+    },
+    async createAdmin() {
+      const data = this.checkInput();
+      let res = await apiService.initSystem(data);
+      if (res && res.success && res.data) {
+        await localforage.setItem("token", res.data.token);
+        this.$router.replace("/index");
+      }
+    },
+    checkInput() {
       const { name, email, password, repeatPassword } = this.data;
       if (!this.showCreateForm && (!email || !password)) {
         this.$message({
@@ -77,11 +112,12 @@ export default {
         });
         return;
       }
-      let res = this.showCreateForm
-        ? await apiService.register(this.data)
-        : await apiService.login(this.data);
+      return this.data;
+    },
+    async onSubmit() {
+      const data = this.checkInput();
+      let res = await apiService.login(data);
       if (res && res.success && res.data) {
-        console.log(res.data.token);
         await localforage.setItem("token", res.data.token);
         this.$router.replace("/index");
       }
@@ -92,6 +128,13 @@ export default {
     returnLogin() {
       this.showCreateForm = false;
     },
+  },
+  async mounted() {
+    const res = await apiService.system();
+    if (res && res.success === false) {
+      this.drawer = true;
+      this.dialogTableVisible = true;
+    }
   },
 };
 </script>

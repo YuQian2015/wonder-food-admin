@@ -2,6 +2,13 @@ import { apiConfig } from '../configs';
 import HttpService from './httpService';
 
 const ApiService = {
+    async system() {
+        return HttpService.get(`${apiConfig.baseUrl}/api/public/system`);
+    },
+    async initSystem(data) {
+        return HttpService.post(`${apiConfig.baseUrl}/api/public/system/init`, data);
+    },
+
     async getUserList(data) {
         return HttpService.get(`${apiConfig.baseUrl}/api/users`, data);
     },

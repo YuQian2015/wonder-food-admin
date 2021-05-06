@@ -8,7 +8,7 @@
       </el-input>
       <br />
       <br />
-      <el-input type="text" placeholder="角色编号" v-model="data.key">
+      <el-input type="text" placeholder="角色Key(英文字母)" v-model="data.key">
       </el-input>
       <br />
       <br />
