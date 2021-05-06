@@ -14,18 +14,24 @@
         </el-table>
       </div>
     </el-tab-pane>
-    <el-tab-pane label="角色管理" name="role">角色管理</el-tab-pane>
+    <el-tab-pane label="角色管理" name="role">
+      <Role />
+    </el-tab-pane>
   </el-tabs>
 </template>
 <script>
 import { apiService } from "../services";
 import { format } from "../utils";
+import Role from "./Role";
 export default {
   data() {
     return {
       activeName: "users",
       users: [],
     };
+  },
+  components: {
+    Role,
   },
   methods: {
     format,

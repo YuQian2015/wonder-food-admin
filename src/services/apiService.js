@@ -46,10 +46,22 @@ const ApiService = {
     async getProduct() {
         return HttpService.get(`${apiConfig.baseUrl}/api/products`);
     },
-    
+
     async uploadImage(data) {
         return HttpService.upload(`${apiConfig.baseUrl}/api/upload/image`, data);
-    }
+    },
+
+    async createRole(data) {
+        return HttpService.post(`${apiConfig.baseUrl}/api/roles`, data);
+    },
+
+    async deleteRole(id) {
+        return HttpService.delete(`${apiConfig.baseUrl}/api/roles/${id}`);
+    },
+
+    async getRoles() {
+        return HttpService.get(`${apiConfig.baseUrl}/api/roles`);
+    },
 }
 
 export default ApiService;
