@@ -7,14 +7,14 @@
       :show-close="false"
       size="100%"
     >
-      <div style="text-align: center">
+      <div style="text-align: center; width: 500px; margin: 200px auto">
         <el-button type="success" round @click="initSystem">立即创建</el-button>
         <br />
         <br />
         <el-alert
           center
           :closable="false"
-          title="系统未设置初始账号，点击创建管理员和用户权限!"
+          title="系统未设置初始账号，点击“立即创建”创建管理员和初始权限!"
           type="error"
         >
         </el-alert>
@@ -133,6 +133,8 @@ export default {
     const res = await apiService.system();
     if (res && res.success === false) {
       this.drawer = true;
+      this.dialogTableVisible = false;
+    } else {
       this.dialogTableVisible = true;
     }
   },
