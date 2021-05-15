@@ -8,7 +8,7 @@
       </el-input>
       <br />
       <br />
-      <el-input type="text" placeholder="角色Key(英文字母)" v-model="data.key">
+      <el-input type="text" placeholder="角色标识(英文字母)" v-model="data.key">
       </el-input>
       <br />
       <br />
@@ -19,7 +19,7 @@
       <el-table :data="roleList">
         <el-table-column prop="id" label="ID"> </el-table-column>
         <el-table-column prop="name" label="名称"> </el-table-column>
-        <el-table-column prop="key" label="编号"></el-table-column>
+        <el-table-column prop="key" label="角色标识"></el-table-column>
         <el-table-column width="160" label="操作">
           <template slot-scope="scope">
             <el-button disabled size="mini">编辑</el-button>

@@ -22,9 +22,8 @@
     </el-drawer>
     <el-dialog
       title="登录/注册"
-      :close-on-click-modal="false"
       :show-close="false"
-      :visible="dialogTableVisible && !drawer"
+      :visible="showCreateForm && !drawer"
     >
       <el-form ref="form" :model="data" label-width="80px">
         <el-form-item label="Email">
@@ -65,7 +64,6 @@ import { apiService } from "../services";
 export default {
   data() {
     return {
-      dialogTableVisible: false,
       showCreateForm: false,
       drawer: false,
       direction: "ttb",
@@ -133,9 +131,9 @@ export default {
     const res = await apiService.system();
     if (res && res.success === false) {
       this.drawer = true;
-      this.dialogTableVisible = false;
+      this.showCreateForm = false;
     } else {
-      this.dialogTableVisible = true;
+      this.showCreateForm = true;
     }
   },
 };
