@@ -73,6 +73,18 @@ const ApiService = {
     async getRoles() {
         return HttpService.get(`${apiConfig.baseUrl}/api/roles`);
     },
+
+    async createPolicy(data) {
+        return HttpService.post(`${apiConfig.baseUrl}/api/policies`, data);
+    },
+
+    async deletePolicy(id) {
+        return HttpService.delete(`${apiConfig.baseUrl}/api/policies/${id}`);
+    },
+
+    async getPolicies() {
+        return HttpService.get(`${apiConfig.baseUrl}/api/policies`);
+    },
 }
 
 export default ApiService;

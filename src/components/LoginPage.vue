@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-drawer
-      :visible.sync="drawer"
+      :visible.sync="showDrawer"
       :direction="direction"
       :before-close="handleClose"
       :show-close="false"
@@ -23,13 +23,13 @@
     <el-dialog
       title="登录/注册"
       :show-close="false"
-      :visible="showCreateForm && !drawer"
+      :visible="showCreateForm && !showDrawer"
     >
       <el-form ref="form" :model="data" label-width="80px">
         <el-form-item label="Email">
           <el-input placeholder="输入email" v-model="data.email"></el-input>
         </el-form-item>
-        <el-form-item v-if="showCreateForm" label="用户名">
+        <el-form-item v-if="showCreateForm && !showLogin" label="用户名">
           <el-input placeholder="输入用户名" v-model="data.name"></el-input>
         </el-form-item>
         <el-form-item label="密码">
@@ -39,7 +39,7 @@
             v-model="data.password"
           ></el-input>
         </el-form-item>
-        <el-form-item v-if="showCreateForm" label="重复密码">
+        <el-form-item v-if="showCreateForm && !showLogin" label="重复密码">
           <el-input
             placeholder="输入密码"
             type="password"
@@ -47,10 +47,13 @@
           ></el-input>
         </el-form-item>
         <div style="text-align: center">
-          <el-button v-if="!showCreateForm" type="primary" @click="onSubmit"
+          <el-button v-if="showLogin" type="primary" @click="onSubmit"
             >登录</el-button
           >
-          <el-button v-if="showCreateForm" type="primary" @click="createAdmin"
+          <el-button
+            v-if="showCreateForm && !showLogin"
+            type="primary"
+            @click="createAdmin"
             >创建超级管理员</el-button
           >
         </div>
@@ -65,7 +68,8 @@ export default {
   data() {
     return {
       showCreateForm: false,
-      drawer: false,
+      showLogin: false,
+      showDrawer: false,
       direction: "ttb",
       data: {
         name: "",
@@ -78,11 +82,14 @@ export default {
   methods: {
     handleClose() {},
     initSystem() {
-      this.drawer = false;
+      this.showDrawer = false;
       this.showCreateForm = true;
     },
     async createAdmin() {
       const data = this.checkInput();
+      if (!data) {
+        return;
+      }
       let res = await apiService.initSystem(data);
       if (res && res.success && res.data) {
         await localforage.setItem("token", res.data.token);
@@ -91,7 +98,7 @@ export default {
     },
     checkInput() {
       const { name, email, password, repeatPassword } = this.data;
-      if (!this.showCreateForm && (!email || !password)) {
+      if (this.showLogin && (!email || !password)) {
         this.$message({
           showClose: true,
           message: "请填入必填信息！",
@@ -100,7 +107,7 @@ export default {
         return;
       }
       if (
-        this.showCreateForm &&
+        this.showCreateForm && !this.showLogin &&
         (!name || !email || !password || !repeatPassword)
       ) {
         this.$message({
@@ -114,6 +121,9 @@ export default {
     },
     async onSubmit() {
       const data = this.checkInput();
+      if (!data) {
+        return;
+      }
       let res = await apiService.login(data);
       if (res && res.success && res.data) {
         await localforage.setItem("token", res.data.token);
@@ -130,10 +140,11 @@ export default {
   async mounted() {
     const res = await apiService.system();
     if (res && res.success === false) {
-      this.drawer = true;
+      this.showDrawer = true;
       this.showCreateForm = false;
     } else {
       this.showCreateForm = true;
+      this.showLogin = true;
     }
   },
 };

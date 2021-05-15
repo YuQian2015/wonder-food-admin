@@ -48,12 +48,16 @@
     <el-tab-pane label="角色管理" name="role">
       <Role />
     </el-tab-pane>
+    <el-tab-pane label="协议管理" name="policy">
+      <Policy />
+    </el-tab-pane>
   </el-tabs>
 </template>
 <script>
 import { apiService } from "../services";
 import { format } from "../utils";
 import Role from "./Role";
+import Policy from "./Policy";
 export default {
   data() {
     return {
@@ -66,6 +70,7 @@ export default {
   },
   components: {
     Role,
+    Policy,
   },
   methods: {
     format,
