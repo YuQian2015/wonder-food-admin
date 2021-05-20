@@ -63,7 +63,9 @@
 </template>
 <script>
 import localforage from "localforage";
+import md5 from "md5";
 import { apiService } from "../services";
+import { validateEmail } from "../utils";
 export default {
   data() {
     return {
@@ -107,7 +109,8 @@ export default {
         return;
       }
       if (
-        this.showCreateForm && !this.showLogin &&
+        this.showCreateForm &&
+        !this.showLogin &&
         (!name || !email || !password || !repeatPassword)
       ) {
         this.$message({
@@ -117,7 +120,19 @@ export default {
         });
         return;
       }
-      return this.data;
+      if (!validateEmail(email)) {
+        this.$message({
+          showClose: true,
+          message: "请填入正确的邮箱！",
+          type: "error",
+        });
+        return;
+      }
+      return {
+        name: this.data.name,
+        email: this.data.email,
+        password: md5(this.data.password),
+      };
     },
     async onSubmit() {
       const data = this.checkInput();

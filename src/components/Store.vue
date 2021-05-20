@@ -17,6 +17,7 @@
         <el-input v-model="data.tel" placeholder="电话"></el-input>
         <br />
         <br />
+        <el-amap style="width: 500px; height: 200px;" vid="amapDemo" :zoom="10" :center="[109, 32]"> </el-amap>
         <el-upload
           :limit="1"
           action="#"

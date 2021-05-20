@@ -91,7 +91,7 @@ export default {
       }
     },
     async handleEdit(index, data) {
-      this.value = data.role.id;
+      this.value = data.role ? data.role.id : '';
       this.index = index;
       const res = await apiService.getRoles();
       if (res && res.success) {
