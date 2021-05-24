@@ -8,6 +8,7 @@ import Store from './components/Store.vue';
 import Products from './components/Products.vue';
 import Roles from './components/Roles.vue';
 import Polices from './components/Polices.vue';
+import Banner from './components/Banner.vue';
 
 Vue.use(VueRouter)
 
@@ -32,6 +33,11 @@ const routes = [
         path: '/store',
         name: 'store',
         component: Store
+    },
+    {
+        path: '/banner',
+        name: 'banner',
+        component: Banner
     },
     {
         path: '/dish',

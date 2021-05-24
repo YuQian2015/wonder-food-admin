@@ -15,9 +15,9 @@
           <i class="el-icon-star-off"></i>
           <span>发帖管理</span>
         </el-menu-item>
-        <el-menu-item index="1-2">
+        <el-menu-item index="banner">
           <i class="el-icon-reading"></i>
-          <span>配置管理</span>
+          <span>轮播管理</span>
         </el-menu-item>
       </el-menu-item-group>
     </el-submenu>

@@ -1,42 +1,8 @@
 <template>
   <div>
     <div>
-      <el-button size="small" v-if="!showAdd" type="primary" @click="newStore"
-        >新增商家</el-button
-      >
-      <div v-if="showAdd">
-        <el-input v-model="data.name" placeholder="商家名称"></el-input>
-        <br />
-        <br />
-        <el-input v-model="data.description" placeholder="简介"></el-input>
-        <br />
-        <br />
-        <el-input v-model="data.tel" placeholder="电话"></el-input>
-        <br />
-        <br />
-        <el-input v-model="data.address" placeholder="地址"></el-input>
-        <br />
-        <br />
-        <el-upload
-          :limit="1"
-          action="#"
-          list-type="picture-card"
-          :auto-upload="false"
-          :on-exceed="showLimit"
-          :on-change="handleFileChange"
-          :on-remove="handleFileRemove"
-          ref="upload"
-        >
-          <i slot="default" class="el-icon-plus"></i>
-        </el-upload>
-        <br />
-        <el-button size="small" @click="cancelAdd">取消</el-button>
-        <el-button size="small" type="primary" @click="doAdd">提交</el-button>
-      </div>
+      <NewStore :onSave="handleSaveComplete" />
     </div>
-    <el-dialog :visible.sync="dialogVisible">
-      <img width="100%" :src="dialogImageUrl" alt="" />
-    </el-dialog>
     <Empty
       v-if="storeList && storeList.length === 0"
       text="没有商铺信息，点击新增创建吧~"
@@ -80,81 +46,27 @@
 import Empty from "./Empty";
 import { apiService } from "../services";
 import { format } from "../utils";
+import NewStore from "./NewStore";
 export default {
   data() {
     return {
-      dialogImageUrl: "",
-      dialogVisible: false,
       disabled: false,
-      data: {},
-      showAdd: false,
       storeList: [],
-      cover: null,
-      uploadedCover: "",
     };
   },
   components: {
     Empty,
+    NewStore,
   },
   methods: {
     format,
-    showLimit() {
-      this.$message({
-        showClose: true,
-        message: "最多选择1张图片",
-        type: "error",
-      });
-    },
-    handleFileRemove() {
-      this.cover = null;
-    },
-    handleFileChange(file) {
-      this.cover = file;
-    },
     async handleDelete(index, data) {
       await apiService.deleteStore(data.id);
       this.storeList.splice(index, 1);
     },
-    handlePictureCardPreview(file) {
-      this.dialogImageUrl = file.url;
-      this.dialogVisible = true;
-    },
-    newStore() {
-      this.showAdd = true;
-    },
-    cancelAdd() {
-      this.showAdd = false;
-    },
-    async doAdd() {
-      await this.doUpload();
-      const res = await apiService.createStore({
-        images: this.uploadedCover,
-        ...this.data,
-      });
-      if (res && res.success) {
-        this.data = {};
-        this.storeList.unshift(res.data);
-      }
-      this.showAdd = false;
-      this.cover = null;
-      this.uploadedCover = "";
-    },
-
-    async doUpload() {
-      const file = this.cover && this.cover.raw;
-      this.uploadedCover = "";
-      if (file) {
-        const form = new FormData();
-        form.append(
-          "file",
-          file,
-          new Date().getTime() + "." + file.type.split("/")[1]
-        );
-        const res = await apiService.uploadImage(form);
-        if (res && res.success) {
-          this.uploadedCover = res.data.url;
-        }
-      }
+    handleSaveComplete(data) {
+      console.log(data);
+      this.storeList.unshift(data);
     },
   },
   async mounted() {
@@ -162,10 +74,10 @@ export default {
     if (res && res.success) {
       this.storeList = res.data;
     }
-    window.AmapAutoComplete.search("a", function (status, result) {
-      console.log(status, result);
-      // 搜索成功时，result即是对应的匹配数据
-    });
+    // window.AmapAutoComplete.search("a", function (status, result) {
+    //   console.log(status, result);
+    //   // 搜索成功时，result即是对应的匹配数据
+    // });
   },
 };
 </script>
