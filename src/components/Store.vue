@@ -11,13 +11,12 @@
         <el-input v-model="data.description" placeholder="简介"></el-input>
         <br />
         <br />
-        <el-input v-model="data.address" placeholder="地址"></el-input>
-        <br />
-        <br />
         <el-input v-model="data.tel" placeholder="电话"></el-input>
         <br />
         <br />
-        <el-amap style="width: 500px; height: 200px;" vid="amapDemo" :zoom="10" :center="[109, 32]"> </el-amap>
+        <el-input v-model="data.address" placeholder="地址"></el-input>
+        <br />
+        <br />
         <el-upload
           :limit="1"
           action="#"
@@ -163,6 +162,10 @@ export default {
     if (res && res.success) {
       this.storeList = res.data;
     }
+    window.AmapAutoComplete.search("a", function (status, result) {
+      console.log(status, result);
+      // 搜索成功时，result即是对应的匹配数据
+    });
   },
 };
 </script>

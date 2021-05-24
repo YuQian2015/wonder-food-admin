@@ -1,8 +1,6 @@
 <template>
   <div>
-    <el-button v-if="!showAdd" @click="showAdd = true" type="primary"
-      >新增协议</el-button
-    >
+    <el-button v-if="!showAdd" @click="showAdd = true" type="primary" size="small">新增协议</el-button>
     <div v-if="showAdd">
       <el-input type="text" placeholder="协议名称" v-model="data.name">
       </el-input>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-button v-if="!showAdd" @click="addRole" type="primary"
+    <el-button v-if="!showAdd" @click="addRole" type="primary" size="small"
       >新增角色</el-button
     >
     <div v-if="showAdd">

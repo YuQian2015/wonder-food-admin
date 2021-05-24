@@ -28,10 +28,29 @@ export default {
   components: {
     Nav,
   },
+  methods: {
+    init() {
+      let script = document.createElement("script");
+      script.src =
+        "https://webapi.amap.com/maps?v=1.4.15&key=1202ee25f8c08378ce429a7283076c36";
+      document.body.append(script);
+      script.addEventListener("load", function () {
+        const AMap = window["AMap"];
+        AMap.plugin("AMap.Autocomplete", function () {
+          // 实例化Autocomplete
+          window.AmapAutoComplete = new AMap.Autocomplete({
+            //city 限定城市，默认全国
+            city: "全国",
+          });
+        });
+      });
+    },
+  },
   mounted() {
     window.addEventListener("token_invalid", () => {
       this.$router.replace("/login");
     });
+    this.init();
   },
 };
 </script>
@@ -43,7 +62,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-bottom: solid 1px #CCCCCC;
+  border-bottom: solid 1px #cccccc;
 }
 .logo {
   padding: 10px;

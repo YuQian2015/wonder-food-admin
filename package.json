@@ -15,7 +15,6 @@
     "localforage": "^1.9.0",
     "md5": "^2.3.0",
     "vue": "^2.6.11",
-    "vue-amap": "^0.5.10",
     "vue-router": "^3.5.1"
   },
   "devDependencies": {

@@ -1,11 +1,13 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
-import UserList from './components/UserList.vue';
+import Users from './components/Users.vue';
 import LoginPage from './components/LoginPage.vue';
 import Posts from './components/Posts.vue';
 import Store from './components/Store.vue';
 import Products from './components/Products.vue';
+import Roles from './components/Roles.vue';
+import Polices from './components/Polices.vue';
 
 Vue.use(VueRouter)
 
@@ -19,7 +21,7 @@ const routes = [
     {
         path: '/users',
         name: 'user-list',
-        component: UserList
+        component: Users
     },
     {
         path: '/index',
@@ -35,6 +37,16 @@ const routes = [
         path: '/dish',
         name: 'dish',
         component: Products
+    },
+    {
+        path: '/roles',
+        name: 'roles',
+        component: Roles
+    },
+    {
+        path: '/polices',
+        name: 'polices',
+        component: Polices
     }
 ];
 

@@ -11,8 +11,9 @@ export default {
 <style scoped>
 .empty {
   padding: 50px;
-  background: #f1f1f1;
-  color: #969799;
+  background: #f9f9f9;
+  color: #848484;
+  font-size: 14px;
   display: flex;
   align-content: center;
   justify-content: center;
