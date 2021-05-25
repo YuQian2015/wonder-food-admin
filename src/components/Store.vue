@@ -65,7 +65,6 @@ export default {
       this.storeList.splice(index, 1);
     },
     handleSaveComplete(data) {
-      console.log(data);
       this.storeList.unshift(data);
     },
   },
@@ -74,10 +73,6 @@ export default {
     if (res && res.success) {
       this.storeList = res.data;
     }
-    // window.AmapAutoComplete.search("a", function (status, result) {
-    //   console.log(status, result);
-    //   // 搜索成功时，result即是对应的匹配数据
-    // });
   },
 };
 </script>

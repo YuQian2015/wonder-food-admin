@@ -1,37 +1,22 @@
 <template>
   <div>
-    <el-button size="small" type="primary" @click="showAdd = true"
-      >新增商家</el-button
-    >
-    <el-dialog title="新增商家" :visible.sync="showAdd" width="500px">
-      <el-input v-model="data.name" placeholder="商家名称"></el-input>
+    <el-button size="small" type="primary" @click="newDish">新增菜肴</el-button>
+    <el-dialog title="新增角色" :visible.sync="showAdd" width="500px">
+      <el-input v-model="data.name" placeholder="菜肴名称"></el-input>
       <br />
       <br />
       <el-input v-model="data.description" placeholder="简介"></el-input>
       <br />
       <br />
-      <el-input v-model="data.tel" placeholder="电话"></el-input>
-      <br />
-      <br />
       <el-autocomplete
         style="width: 100%"
-        v-model="data.address"
-        :fetch-suggestions="querySearch"
-        placeholder="地址"
-        :trigger-on-focus="false"
-        @select="handleSelect"
+        v-model="state"
         value-key="name"
-        :debounce="500"
-        :highlight-first-item="true"
-      >
-      </el-autocomplete>
+        :fetch-suggestions="querySearch"
+        placeholder="选择商家"
+        @select="handleSelect"
+      ></el-autocomplete>
       <br />
-      <br />
-      <div style="width: 100%; height: 100px">
-        <amap cache-key="home-map" ref="myMap" :zoom="12" :center="position">
-          <amap-marker :position="position" />
-        </amap>
-      </div>
       <br />
       <el-upload
         :limit="1"
@@ -45,6 +30,7 @@
       >
         <i slot="default" class="el-icon-plus"></i>
       </el-upload>
+      <br />
       <span slot="footer" class="dialog-footer">
         <el-button @click="showAdd = false" size="small">取消</el-button>
         <el-button type="success" @click="doAdd" size="small">保存</el-button>
@@ -56,7 +42,6 @@
   </div>
 </template>
 <script>
-import { loadPlugins } from "@amap/amap-vue";
 import { apiService } from "../services";
 export default {
   props: {
@@ -66,26 +51,36 @@ export default {
     return {
       dialogImageUrl: "",
       dialogVisible: false,
+      data: {},
       showAdd: false,
       cover: null,
       uploadedCover: "",
-      data: {},
-      position: [116.397755, 39.903179],
+      store: null,
+      storeList: [],
+      state: "",
     };
   },
   methods: {
     querySearch(queryString, cb) {
-      this.ac.search(queryString, (status, result) => {
-        console.log(result);
-        if (status === "complete" && result.info === "OK" && result.tips) {
-          cb(result.tips);
-        } else {
-          cb([]);
-        }
-      });
+      var storeList = this.storeList;
+      var results = queryString
+        ? storeList.filter(
+            (store) =>
+              store.name.toLowerCase().indexOf(queryString.toLowerCase()) === 0
+          )
+        : storeList;
+      // 调用 callback 返回建议列表的数据
+      cb(results);
     },
     handleSelect(item) {
-      this.position = [item.location.lng, item.location.lat];
+      this.store = item;
+    },
+    async newDish() {
+      this.showAdd = true;
+      const res = await apiService.getStore();
+      if (res && res.success) {
+        this.storeList = res.data;
+      }
     },
     showLimit() {
       this.$message({
@@ -94,28 +89,34 @@ export default {
         type: "error",
       });
     },
+    handlePictureCardPreview(file) {
+      this.dialogImageUrl = file.url;
+      this.dialogVisible = true;
+    },
     handleFileRemove() {
       this.cover = null;
     },
     handleFileChange(file) {
       this.cover = file;
     },
-    handlePictureCardPreview(file) {
-      this.dialogImageUrl = file.url;
-      this.dialogVisible = true;
-    },
     async doAdd() {
       await this.doUpload();
-      const res = await apiService.createStore({
+      let data = {
         images: this.uploadedCover,
         ...this.data,
-      });
+      };
+      if (this.store) {
+        data.store_id = this.store.id;
+      }
+      const res = await apiService.createProduct(data);
       if (res && res.success) {
         this.data = {};
         this.onSave && this.onSave(res.data);
       }
       this.showAdd = false;
       this.cover = null;
+      this.store = null;
+      this.state = null;
       this.uploadedCover = "";
     },
     async doUpload() {
@@ -134,11 +135,6 @@ export default {
         }
       }
     },
-  },
-  async mounted() {
-    await loadPlugins(["AMap.AutoComplete"]);
-    const AMap = window["AMap"];
-    this.ac = new AMap.AutoComplete();
   },
 };
 </script>
