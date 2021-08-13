@@ -3,6 +3,7 @@ import ElementUI from 'element-ui';
 // 引入vue-amap
 import AmapVue from '@amap/amap-vue';
 import VueRouter from 'vue-router';
+import VueCropper from 'vue-cropper';
 import 'element-ui/lib/theme-chalk/index.css';
 import App from './App.vue';
 import router from './router';
@@ -10,6 +11,7 @@ import router from './router';
 Vue.config.productionTip = false
 Vue.use(VueRouter);
 Vue.use(ElementUI);
+Vue.use(VueCropper);
 
 AmapVue.config.version = '2.0'; // 默认2.0，这里可以不修改
 AmapVue.config.key = '1202ee25f8c08378ce429a7283076c36';

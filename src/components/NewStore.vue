@@ -85,7 +85,9 @@ export default {
       });
     },
     handleSelect(item) {
-      this.position = [item.location.lng, item.location.lat];
+      if (item.location) {
+        this.position = [item.location.lng, item.location.lat];
+      }
     },
     showLimit() {
       this.$message({

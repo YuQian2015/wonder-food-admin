@@ -12,7 +12,7 @@ const ApiService = {
     async getUserList(data) {
         return HttpService.get(`${apiConfig.baseUrl}/api/users`, data);
     },
-    
+
     async updateUserInfo(data) {
         return HttpService.put(`${apiConfig.baseUrl}/api/users/info`, data);
     },
@@ -85,6 +85,15 @@ const ApiService = {
     async getPolicies() {
         return HttpService.get(`${apiConfig.baseUrl}/api/policies`);
     },
+
+    async createSetting(data) {
+        return HttpService.post(`${apiConfig.baseUrl}/api/settings`, data);
+    },
+    
+    async getSettings(data) {
+        return HttpService.get(`${apiConfig.baseUrl}/api/settings`, data);
+    },
+
 }
 
 export default ApiService;
