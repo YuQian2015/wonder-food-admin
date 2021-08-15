@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-button size="small" type="primary" @click="newDish">新增菜肴</el-button>
-    <el-dialog title="新增角色" :visible.sync="showAdd" width="500px">
+    <el-dialog title="新增菜肴" :visible.sync="showAdd" width="500px">
       <el-input v-model="data.name" placeholder="菜肴名称"></el-input>
       <br />
       <br />

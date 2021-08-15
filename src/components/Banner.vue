@@ -6,27 +6,32 @@
         只支持上传jpg/jpeg文件，建议尺寸640*320
       </div>
     </el-upload>
-    <h3>图片裁剪</h3>
-    <div class="image-container">
-      <vueCropper
-        ref="cropper"
-        :autoCrop="true"
-        :fixedBox="true"
-        :img="option.img"
-        :fixed="true"
-        :fixedNumber="option.fixedNumber"
-        :outputSize="option.size"
-        :outputType="option.outputType"
-        :autoCropWidth="640"
-        :autoCropHeight="320"
-      ></vueCropper>
-    </div>
-    <br />
-    <el-button size="small" @click="startCrop">保存</el-button>
-    <div v-if="data && data.length">
+    <el-dialog title="图片裁剪" :visible.sync="showAdd" width="800px">
+      <div class="image-container">
+        <vueCropper
+          ref="cropper"
+          :autoCrop="true"
+          :fixedBox="true"
+          :img="option.img"
+          :fixed="true"
+          :fixedNumber="option.fixedNumber"
+          :outputSize="option.size"
+          :outputType="option.outputType"
+          :autoCropWidth="640"
+          :autoCropHeight="320"
+        ></vueCropper>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="showAdd = false" size="small">取消</el-button>
+        <el-button type="success" @click="startCrop" size="small"
+          >保存</el-button
+        >
+      </span>
+    </el-dialog>
+    <div v-if="banners && banners.length">
       <h3>已设置图片</h3>
       <div>
-        <div v-for="item in data" :key="item.url" class="image-item">
+        <div v-for="item in banners" :key="item.url" class="image-item">
           <el-image
             style="width: 100px; height: 100px"
             :src="item.url"
@@ -38,7 +43,7 @@
         </div>
       </div>
     </div>
-    <div class="banners && banners.length">
+    <div v-if="banners && banners.length">
       <h3>效果预览</h3>
       <div class="image-container2">
         <el-carousel indicator-position="outside">
@@ -48,6 +53,7 @@
         </el-carousel>
       </div>
     </div>
+    <el-button v-if="needSave" type="primary" size="small" @click="doSave">保存结果</el-button>
   </div>
 </template>
 <script>
@@ -55,7 +61,8 @@ import { apiService } from "../services";
 export default {
   data() {
     return {
-      data: [],
+      showAdd: false,
+      needSave: false,
       banners: [],
       previewData: {},
       cropFile: null,
@@ -72,14 +79,27 @@ export default {
     });
     if (res && res.success && res.data) {
       this.banners = JSON.parse(res.data[0].data);
-      this.data = this.banners;
     }
   },
   methods: {
+    async doSave() {
+      await apiService.createSetting({
+        type: "banner",
+        data: JSON.stringify(this.banners),
+      });
+      this.needSave = false;
+      this.$message({
+        showClose: true,
+        message: "保存成功",
+        type: "success",
+      });
+      this.clearData();
+    },
     handleResize(file) {
       const url = URL.createObjectURL(file);
       // 将图片转换成blobUrl给裁剪元素
       this.option.img = url;
+      this.showAdd = true;
       return false;
     },
 
@@ -91,10 +111,10 @@ export default {
     },
 
     removeBanner(data) {
-      const index = this.data.findIndex((item) => item.url === data.url);
+      const index = this.banners.findIndex((item) => item.url === data.url);
       if (index > -1) {
-        this.data.splice(index, 1);
         this.banners.splice(index, 1);
+        this.needSave = true;
       }
     },
 
@@ -109,15 +129,12 @@ export default {
         );
         const res = await apiService.uploadImage(form);
         if (res && res.success) {
-          this.data.push({
+          this.banners.push({
             url: res.data.url,
             link: "",
           });
-          await apiService.createSetting({
-            type: "banner",
-            data: JSON.stringify(this.data),
-          });
-          this.clearData();
+          this.showAdd = false;
+          this.needSave = true;
         }
       }
     },
